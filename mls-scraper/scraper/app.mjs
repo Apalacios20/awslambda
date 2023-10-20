@@ -61,25 +61,12 @@ async function redfinAddressScrape(mlsOrAddress) {
     console.log("im her3!");
 
     await page.goto("https://www.redfin.com/");
-    // await page.screenshot({
-    //   path: "screenshot.jpg",
-    //   fullPage: true,
-    // });
     await page.waitForTimeout(5000);
-    // await page.screenshot({ path: "home.png", fullPage: true });
     console.log("launched");
 
     console.log(mlsOrAddress);
     await page.type("#search-box-input", mlsOrAddress, { delay: 0 });
     console.log("yung money");
-    // await page.screenshot({
-    //   path: "/tmp/screenshot2.jpg",
-    //   fullPage: true,
-    // });
-    // await page.waitForNavigation({ waitUntil: "domcontentloaded" });
-    // await page.waitForSelector(
-    //   ".inline-block.SearchButton.clickable.float-right"
-    // );
 
     // CLICKER
     await page.waitForTimeout(5000);
@@ -90,22 +77,15 @@ async function redfinAddressScrape(mlsOrAddress) {
       await page.evaluate((el) => {
         return el.click();
       }, clicker);
-      await page.waitFor(1500);
+      await page.waitForTimeout(1500);
     } catch (e) {
       console.log("click error", e);
     }
 
-    // await page.click(".inline-block.SearchButton.clickable.float-right");
     await page.waitForTimeout(5000);
-    // await page.screenshot({
-    //   path: "/tmp/screenshot3.jpg",
-    //   fullPage: true,
-    // });
     console.log("waiting");
-    // await page.waitForNavigation({ waitUntil: "domcontentloaded" });
 
-    await page.waitForSelector(".statsValue", { timeout: 120000 });
-    // await page.screenshot({ path: "stealth.png", fullPage: true });
+    // await page.waitForSelector(".statsValue", { timeout: 120000 });
     const infoX = await page.$$("[class='statsValue']");
     const [price, bedrooms, bathrooms, sqft] = await Promise.all([
       (await infoX[0].getProperty("textContent")).jsonValue(),
