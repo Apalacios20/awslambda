@@ -24,8 +24,15 @@ resolve_s3 = true
 [default.sync.parameters]
 watch = true
 
-[default.local_start_api.parameters]
-warm_containers = "LAZY"
-
 [default.local_start_lambda.parameters]
 warm_containers = "LAZY"
+
+[dev.deploy.parameters]
+stack_name = "mls-scraper"
+resolve_s3 = true
+s3_prefix = "mls-scraper"
+resolve_image_repos = true
+region = "us-west-2"
+profile = "personal-anthony"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"

@@ -11,35 +11,14 @@
  *
  */
 import puppeteer from "puppeteer-core";
-// import puppeteerExtra from "puppeteer-extra";
-// import stealthPlugin from "puppeteer-extra-plugin-stealth";
 import chromium from "@sparticuz/chromium";
 
 const removeSymbols = (string) => {
   return string.replace(/[!-\/:-@[-`{-~]/g, "");
 };
-//
-//
-//
+
 async function redfinAddressScrape(mlsOrAddress) {
-  chromium.setHeadlessMode = true;
   try {
-    // puppeteerExtra.use(stealthPlugin());
-
-    // const browser = await puppeteerExtra.launch({
-    //   executablePath:
-    //     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-    //   headless: "new",
-    //   defaultViewport: null,
-    // });
-
-    // const browser = await puppeteerExtra.launch({
-    //   args: chromium.args,
-    //   executablePath: await chromium.executablePath(),
-    //   headless: chromium.headless,
-    //   defaultViewport: chromium.defaultViewport,
-    //   ignoreHTTPSErrors: true,
-    // });
     console.log(chromium.args);
 
     const browser = await puppeteer.launch({
@@ -53,12 +32,10 @@ async function redfinAddressScrape(mlsOrAddress) {
       headless: chromium.headless,
       ignoreHTTPSErrors: true,
     });
-    console.log("im her2!");
 
     const page = await browser.newPage();
     await page.setViewport({ width: 800, height: 600 });
     page.setDefaultNavigationTimeout(0);
-    console.log("im her3!");
 
     await page.goto("https://www.redfin.com/");
     await page.waitForTimeout(5000);
@@ -66,10 +43,8 @@ async function redfinAddressScrape(mlsOrAddress) {
 
     console.log(mlsOrAddress);
     await page.type("#search-box-input", mlsOrAddress, { delay: 0 });
-    console.log("yung money");
 
-    // CLICKER
-    await page.waitForTimeout(5000);
+    // await page.waitForTimeout(5000);
     const clicker = await page.$(
       ".inline-block.SearchButton.clickable.float-right"
     );
@@ -81,11 +56,8 @@ async function redfinAddressScrape(mlsOrAddress) {
     } catch (e) {
       console.log("click error", e);
     }
-
-    await page.waitForTimeout(5000);
     console.log("waiting");
 
-    // await page.waitForSelector(".statsValue", { timeout: 120000 });
     const infoX = await page.$$("[class='statsValue']");
     const [price, bedrooms, bathrooms, sqft] = await Promise.all([
       (await infoX[0].getProperty("textContent")).jsonValue(),
@@ -196,5 +168,5 @@ export const lambdaHandler = async (event, context) => {
     return err;
   }
 
-  return response;
+  // return response;
 };

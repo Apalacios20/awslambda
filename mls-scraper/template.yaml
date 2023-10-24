@@ -9,7 +9,7 @@ Description: >
 Globals:
   Function:
     Timeout: 300
-    MemorySize: 4096
+    MemorySize: 3005
 
 Resources:
   ScraperFunction:
@@ -19,11 +19,6 @@ Resources:
       Architectures:
       - x86_64
       Events:
-        Scraper:
-          Type: Api
-          Properties:
-            Path: /scrape
-            Method: get
     Metadata:
       DockerTag: nodejs18.x-v1
       DockerContext: ./scraper
@@ -46,9 +41,6 @@ Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  ScraperApi:
-    Description: API Gateway endpoint URL for Prod stage for Scraper function
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/scrape/"
   ScraperFunction:
     Description: Scraper Lambda Function ARN
     Value: !GetAtt ScraperFunction.Arn
